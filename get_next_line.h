@@ -16,7 +16,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# define BUFF_SIZE 5
+# define BUFF_SIZE 50
 
 char			*ft_strcpy(char *dst, char *src);
 char			*ft_strcat(char *s1, const char *s2);

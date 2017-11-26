@@ -51,18 +51,21 @@ int			get_next_line(const int fd, char **line)
 	char	buf[BUFF_SIZE + 1];
 	int		ret;
 	char	*temp;
-	char	*tab2;
-	int		jl_pos;
+	char	*content;
+	int		nl_pos;
+	char	*temprest;
 
 	if (fd < 0 || fd == 1 || fd == 2 || BUFF_SIZE <= 0 || !line)
 		return (-1);
 	if (reste)
 	{
-		tab2 = get_reste(reste);
-		reste = &reste[ft_strlen(tab2) + 1];
+		content = get_reste(reste);
+		temprest = ft_strdup(&reste[ft_strlen(content) + 1]);
+		free(reste);
+		reste = temprest;
 		if (ft_strlen(reste) > 0)
 		{
-			*line = tab2;
+			*line = content;
 			return (1);
 		}
 	}
@@ -71,29 +74,29 @@ int			get_next_line(const int fd, char **line)
 		if (ret == -1)
 			return (-1);
 		buf[ret] = '\0';
-		if (!(temp = ft_strnew(ft_strlen(tab2) + 1)))
+		if (!(temp = ft_strnew(ft_strlen(content) + 1)))
 			return (-1);
-		if (tab2)
+		if (content)
 		{
-			temp = ft_strcpy(temp, tab2);
-			free(tab2);
+			ft_strcpy(temp, content);
+			free(content);
 		}
-		if (!(tab2 = ft_strnew(ft_strlen(temp) + ft_strlen(buf) + 1)))
+		if (!(content = ft_strnew(ft_strlen(temp) + ft_strlen(buf) + 1)))
 			return (-1);
-		ft_strcpy(tab2, temp);
+		ft_strcpy(content, temp);
 		free(temp);
-		if ((jl_pos = buf_nl(buf)) > -1)
+		if ((nl_pos = buf_nl(buf)) > -1)
 		{
-			reste = ft_strsub(buf, jl_pos + 1, ret - jl_pos);
-			ft_strncat(tab2, buf, (size_t)jl_pos);
-			*line = tab2;
+			reste = ft_strsub(buf, nl_pos + 1, ret - nl_pos);
+			ft_strncat(content, buf, (size_t)nl_pos);
+			*line = content;
 			return (1);
 		}
 		else {
-			ft_strcat(tab2, buf);
+			ft_strcat(content, buf);
 		}
 	}
-	*line = tab2;
+	*line = content;
 	if (ret == 0 && !*reste)
 		return (0);
 	return (1);
