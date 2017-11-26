@@ -36,7 +36,6 @@ char	*get_reste(char *buf)
 	{
 		if (buf[i] == '\n')
 		{
-			end = (char*)malloc(sizeof(char) * (i + 1));
 			end = ft_strndup(buf, i);
 			return (end);
 		}
@@ -51,15 +50,12 @@ int			get_next_line(const int fd, char **line)
 	static char	*reste;
 	char	buf[BUFF_SIZE + 1];
 	int		ret;
-	char	*tab1;
+	char	*temp;
 	char	*tab2;
-	int		len;
 	int		jl_pos;
 
 	if (fd < 0 || fd == 1 || fd == 2 || BUFF_SIZE <= 0 || !line)
 		return (-1);
-	len = BUFF_SIZE;
-	tab2 = 0;
 	if (reste)
 	{
 		tab2 = get_reste(reste);
@@ -75,18 +71,17 @@ int			get_next_line(const int fd, char **line)
 		if (ret == -1)
 			return (-1);
 		buf[ret] = '\0';
-		if (!(tab1 = (char*)malloc(sizeof(char) * (len + 1))))
+		if (!(temp = ft_strnew(ft_strlen(tab2) + 1)))
 			return (-1);
 		if (tab2)
 		{
-			tab1 = ft_strcpy(tab1, tab2);
+			temp = ft_strcpy(temp, tab2);
 			free(tab2);
 		}
-		len += ret;
-		if (!(tab2 = (char*)malloc(sizeof(char) * (len + 1))))
+		if (!(tab2 = ft_strnew(ft_strlen(temp) + ft_strlen(buf) + 1)))
 			return (-1);
-		ft_strcpy(tab2, tab1);
-		free(tab1);
+		ft_strcpy(tab2, temp);
+		free(temp);
 		if ((jl_pos = buf_nl(buf)) > -1)
 		{
 			reste = ft_strsub(buf, jl_pos + 1, ret - jl_pos);
@@ -143,5 +138,6 @@ int		main(void)
 	printf("-----------\n");
 	free(line);
 	printf("%d\n", get_next_line(fd, &line));
+	free(line);
 	return (0);
 }
