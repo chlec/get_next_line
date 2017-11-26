@@ -16,11 +16,12 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# define BUFF_SIZE 99999	
+# define BUFF_SIZE 5	
 
 char			*ft_strcpy(char *dst, char *src);
 char			*ft_strcat(char *s1, const char *s2);
 char			*ft_strdup(const char *s1);
+char			*ft_strndup(const char *s1, size_t n);
 char			*ft_strncat(char *s1, const char *s2, size_t n);
 char			*ft_strsub(char const *s, unsigned int start, size_t len);
 size_t			ft_strlen(const char *s);

@@ -37,8 +37,7 @@ char	*get_reste(char *buf)
 		if (buf[i] == '\n')
 		{
 			end = (char*)malloc(sizeof(char) * (i + 1));
-			//REMPLACER NCY PAR UNE AUTRE FCT
-			ft_strncpy(end, buf, i);
+			end = ft_strndup(buf, i);
 			return (end);
 		}
 		i++;
@@ -107,7 +106,7 @@ int			get_next_line(const int fd, char **line)
 
 int		main(void)
 {
-	int	fd;
+	int		fd;
 	char	*line;
 
 	fd = open("test", O_RDONLY);
