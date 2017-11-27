@@ -96,8 +96,10 @@ int			get_next_line(const int fd, char **line)
 		ft_strcat(content, buf);
 	}
 	*line = content;
-	if (content == NULL && ret == 0 && !*reste)
+	if (content == NULL && ret == 0 && !ft_strlen(reste))
+	{
 		return (0);
+	}
 	return (1);
 }
 
