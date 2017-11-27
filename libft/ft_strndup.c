@@ -6,7 +6,7 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/06 14:15:43 by clecalie          #+#    #+#             */
-/*   Updated: 2017/11/08 12:35:18 by clecalie         ###   ########.fr       */
+/*   Updated: 2017/11/27 16:48:32 by clecalie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_strndup(const char *s1, size_t n)
 	char	*ret;
 
 	i = 0;
-	if (!(ret = (char*)malloc(sizeof(char) * (n))))
+	if (!(ret = (char*)malloc(sizeof(char) * (n + 1))))
 		return (0);
 	while (s1[i] && i < n)
 	{

@@ -6,7 +6,7 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 14:20:14 by clecalie          #+#    #+#             */
-/*   Updated: 2017/11/27 16:37:26 by clecalie         ###   ########.fr       */
+/*   Updated: 2017/11/27 16:51:25 by clecalie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,11 @@ int			get_next_line(const int fd, char **line)
 	if (ft_strlen(reste) > 0)
 	{
 		content = get_reste(reste);
-		printf("LINE: |%s|\n", content);
 		temprest = ft_strdup(&reste[ft_strlen(content) + 1]);
 		free(reste);
 		reste = temprest;
 		if (ft_strlen(reste) > 0)
 		{
-			printf("on returne %s\n", content);
 			*line = content;
 			return (1);
 		}
@@ -103,13 +101,14 @@ int			get_next_line(const int fd, char **line)
 	return (1);
 }
 
-int		main(void)
+int		main(int argc, char **argv)
 {
 	int		fd;
 	char	*line;
 	int		ret;
-
-	fd = open("test2", O_RDONLY);
+	
+	(void)argc;
+	fd = open(argv[1], O_RDONLY);
 	while ((ret = get_next_line(fd, &line)))
 	{
 		printf("Ret: %d Line: %s\n", ret, line);
