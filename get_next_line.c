@@ -6,7 +6,7 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 14:20:14 by clecalie          #+#    #+#             */
-/*   Updated: 2017/11/25 14:25:16 by clecalie         ###   ########.fr       */
+/*   Updated: 2017/11/27 15:29:17 by clecalie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ int			get_next_line(const int fd, char **line)
 
 	if (fd < 0 || fd == 1 || fd == 2 || BUFF_SIZE <= 0 || !line)
 		return (-1);
-	if (reste)
+	content = 0;
+	if (ft_strlen(reste) > 0)
 	{
 		content = get_reste(reste);
 		temprest = ft_strdup(&reste[ft_strlen(content) + 1]);
@@ -92,12 +93,10 @@ int			get_next_line(const int fd, char **line)
 			*line = content;
 			return (1);
 		}
-		else {
-			ft_strcat(content, buf);
-		}
+		ft_strcat(content, buf);
 	}
 	*line = content;
-	if (ret == 0 && !*reste)
+	if (content == NULL && ret == 0 && !*reste)
 		return (0);
 	return (1);
 }
@@ -106,41 +105,13 @@ int		main(void)
 {
 	int		fd;
 	char	*line;
+	int		ret;
 
-	fd = open("test", O_RDONLY);
-	get_next_line(fd, &line);
-	printf("%s\n", line);
-	free(line);
-	printf("-----------\n");
-	get_next_line(fd, &line);
-	printf("%s\n", line);
-	free(line);
-	printf("-----------\n");
-	printf("%d\n", get_next_line(fd, &line));
-	printf("%s\n", line);
-	free(line);
-	printf("-----------\n");
-	printf("%d\n", get_next_line(fd, &line));
-	printf("%s\n", line);
-	free(line);
-	printf("-----------\n");
-	printf("%d\n", get_next_line(fd, &line));
-	printf("%s\n", line);
-	free(line);
-	printf("-----------\n");
-	printf("%d\n", get_next_line(fd, &line));
-	printf("%s\n", line);
-	free(line);
-	printf("-----------\n");
-	printf("%d\n", get_next_line(fd, &line));
-	printf("%s\n", line);
-	free(line);
-	printf("-----------\n");
-	printf("%d\n", get_next_line(fd, &line));
-	printf("%s\n", line);
-	printf("-----------\n");
-	free(line);
-	printf("%d\n", get_next_line(fd, &line));
-	free(line);
+	fd = 0;//open("test", O_RDONLY);
+	while ((ret = get_next_line(fd, &line)))
+	{
+		printf("Ret: %d Line: %s\n", ret, line);
+	}
+	printf("Ret: %d Line: %s\n", ret, line);
 	return (0);
 }
