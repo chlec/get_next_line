@@ -6,7 +6,7 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 14:20:14 by clecalie          #+#    #+#             */
-/*   Updated: 2017/11/28 12:10:38 by clecalie         ###   ########.fr       */
+/*   Updated: 2017/11/28 12:51:38 by clecalie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,21 @@ int			get_next_line(const int fd, char **line)
 	if (BUFF_SIZE <= 0 || fd < 0 || fd == 1 || fd == 2 || !line)
 		return (-1);
 	content = 0;
+	temprest = 0;
 	if (ft_strlen(reste) > 0)
 	{
 		/* issue here: the get reste give juste "ipsum" instead of all the strings
 		 * on the last strings, temprest should give NULL instead of "ipsum"*/
 		content = get_reste(reste);
-		temprest = ft_strdup(&reste[ft_strlen(content) + 1]);
+		if (reste[ft_strlen(content)])
+			temprest = ft_strdup(&reste[ft_strlen(content) + 1]);
 		free(reste);
-		reste = temprest;	
+		reste = temprest;
+		if (ft_strlen(reste) > 0)
+		{
+			*line = content;
+			return (1);
+		}
 	}
 	while ((ret = read(fd, buf, BUFF_SIZE)))
 	{
