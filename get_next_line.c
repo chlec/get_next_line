@@ -6,7 +6,7 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 14:20:14 by clecalie          #+#    #+#             */
-/*   Updated: 2017/11/27 16:51:25 by clecalie         ###   ########.fr       */
+/*   Updated: 2017/11/28 12:10:38 by clecalie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,17 @@ int			get_next_line(const int fd, char **line)
 	int		nl_pos;
 	char	*temprest;
 
-	if (fd < 0 || fd == 1 || fd == 2 || BUFF_SIZE <= 0 || !line)
+	if (BUFF_SIZE <= 0 || fd < 0 || fd == 1 || fd == 2 || !line)
 		return (-1);
 	content = 0;
 	if (ft_strlen(reste) > 0)
 	{
+		/* issue here: the get reste give juste "ipsum" instead of all the strings
+		 * on the last strings, temprest should give NULL instead of "ipsum"*/
 		content = get_reste(reste);
 		temprest = ft_strdup(&reste[ft_strlen(content) + 1]);
 		free(reste);
-		reste = temprest;
-		if (ft_strlen(reste) > 0)
-		{
-			*line = content;
-			return (1);
-		}
+		reste = temprest;	
 	}
 	while ((ret = read(fd, buf, BUFF_SIZE)))
 	{
@@ -97,9 +94,7 @@ int			get_next_line(const int fd, char **line)
 	}
 	*line = content;
 	if (content == NULL && ret == 0 && !ft_strlen(reste))
-	{
 		return (0);
-	}
 	return (1);
 }
 
@@ -108,13 +103,21 @@ int		main(int argc, char **argv)
 	int		fd;
 	char	*line;
 	int		ret;
+	int		cmp;
 	
 	(void)argc;
 	fd = open(argv[1], O_RDONLY);
 	while ((ret = get_next_line(fd, &line)))
 	{
-		printf("Ret: %d Line: %s\n", ret, line);
+		if ((cmp = ft_strcmp(line, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in leo dignissim, gravida leo id, imperdiet urna. Aliquam magna nunc, maximus quis eleifend et, scelerisque non dolor. Suspendisse augue augue, tempus")) != 0)
+		{	
+			printf("error: %d\n", cmp);
+			if (line)
+				printf("line: %s\n", line);
+		}
+		//printf("Ret: %d Line: %s\n", ret, line);
 	}
 	printf("Ret: %d Line: %s\n", ret, line);
+	free(line);
 	return (0);
 }
