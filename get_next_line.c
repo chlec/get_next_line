@@ -6,13 +6,13 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 14:20:14 by clecalie          #+#    #+#             */
-/*   Updated: 2017/11/29 14:52:52 by clecalie         ###   ########.fr       */
+/*   Updated: 2017/11/29 14:56:44 by clecalie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int		buf_nl(char *buf)
+static int		nl_index(char *buf)
 {
 	int		i;
 
@@ -26,7 +26,7 @@ static int		buf_nl(char *buf)
 	return (-1);
 }
 
-static char		*get_reste(char *buf)
+static char		*get_rest(char *buf)
 {
 	char	*end;
 	int		i;
@@ -45,20 +45,20 @@ static char		*get_reste(char *buf)
 	return (end);
 }
 
-static	int		check_reste(char **reste, char **content, char *buf, int ret)
+static	int		check_rest(char **rest, char **content, char *buf, int ret)
 {
 	int		nl_pos;
 
-	if ((nl_pos = buf_nl(buf)) > -1)
+	if ((nl_pos = nl_index(buf)) > -1)
 	{
-		*reste = ft_strsub(buf, nl_pos + 1, ret - nl_pos);
+		*rest = ft_strsub(buf, nl_pos + 1, ret - nl_pos);
 		ft_strncat(*content, buf, (size_t)nl_pos);
 		return (1);
 	}
 	return (0);
 }
 
-static int		readfile(int fd, char **content, char **reste)
+static int		readfile(int fd, char **content, char **rest)
 {
 	int		ret;
 	char	buf[BUFF_SIZE + 1];
@@ -80,38 +80,38 @@ static int		readfile(int fd, char **content, char **reste)
 			return (-1);
 		ft_strcpy(*content, temp);
 		free(temp);
-		if (check_reste(reste, content, buf, ret))
+		if (check_rest(rest, content, buf, ret))
 			return (1);
 		ft_strcat(*content, buf);
 	}
-	return (!(*content == NULL && ret <= 0 && !ft_strlen(*reste)));
+	return (!(*content == NULL && ret <= 0 && !ft_strlen(*rest)));
 }
 
 int				get_next_line(const int fd, char **line)
 {
-	static char	*reste;
+	static char	*rest;
 	char		*content;
-	char		*temprest;
+	char		*temp;
 	int			ret;
 
 	if (BUFF_SIZE <= 0 || fd < 0 || fd == 1 || fd == 2 || !line)
 		return (-1);
 	content = 0;
-	temprest = 0;
-	if (ft_strlen(reste) > 0)
+	temp = 0;
+	if (ft_strlen(rest) > 0)
 	{
-		content = get_reste(reste);
-		if (reste[ft_strlen(content) - 1])
-			temprest = ft_strdup(&reste[ft_strlen(content)]);
-		free(reste);
-		reste = temprest;
-		if (ft_strlen(reste) > 0 || ft_strchr(content, '\n'))
+		content = get_rest(rest);
+		if (rest[ft_strlen(content) - 1])
+			temp = ft_strdup(&rest[ft_strlen(content)]);
+		free(rest);
+		rest = temp;
+		if (ft_strlen(rest) > 0 || ft_strchr(content, '\n'))
 		{
 			*line = ft_strndup(content, ft_strlen(content) - 1);
 			return (1);
 		}
 	}
-	ret = readfile(fd, &content, &reste);
+	ret = readfile(fd, &content, &rest);
 	*line = content;
 	return (ret);
 }
