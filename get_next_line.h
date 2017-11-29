@@ -6,16 +6,14 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 14:20:14 by clecalie          #+#    #+#             */
-/*   Updated: 2017/11/28 12:54:59 by clecalie         ###   ########.fr       */
+/*   Updated: 2017/11/29 14:53:02 by clecalie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# include <fcntl.h>
-# include <stdio.h>
 # include "libft.h"
-# define BUFF_SIZE 9999
+# define BUFF_SIZE 32
 
 int				get_next_line(const int fd, char **line);
 
